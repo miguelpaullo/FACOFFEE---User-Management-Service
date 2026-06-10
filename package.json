@@ -1,0 +1,39 @@
+{
+  "name": "facoffee---user-management-service",
+  "version": "1.0.0",
+  "description": "Técnicas Avançadas em Desenvolvimento de Software - Engenharia de Software",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/miguelpaullo/FACOFFEE---User-Management-Service.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/miguelpaullo/FACOFFEE---User-Management-Service/issues"
+  },
+  "homepage": "https://github.com/miguelpaullo/FACOFFEE---User-Management-Service#readme",
+  "dependencies": {
+    "@prisma/client": "^7.8.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "prisma": "^7.8.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.8"
+  }
+}
