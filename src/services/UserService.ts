@@ -7,4 +7,14 @@ export class UserService {
       receivedData: data,
     };
   }
+
+  findAll() {
+    return [
+      {
+        id: 'usr_001',
+        name: 'Maria Silva',
+        email: 'maria@email.com',
+      },
+    ];
+  }
 }

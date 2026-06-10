@@ -10,4 +10,8 @@ router.post('/users', (req, res) =>
   userController.create(req, res),
 );
 
+router.get('/users', (req, res) =>
+  userController.findAll(req, res),
+);
+
 export default router;
