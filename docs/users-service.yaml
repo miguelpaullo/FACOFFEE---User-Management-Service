@@ -103,3 +103,21 @@ paths:
       responses:
         '200':
           description: Usuário atualizado
+    
+    delete:
+      summary: Desativar usuário
+
+      tags:
+        - Users
+
+      parameters:
+        - in: path
+          name: userId
+          required: true
+
+          schema:
+            type: string
+
+      responses:
+        '200':
+          description: Usuário desativado

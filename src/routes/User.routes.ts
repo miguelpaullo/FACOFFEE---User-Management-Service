@@ -22,4 +22,8 @@ router.patch('/users/:userId', (req, res) =>
   userController.update(req, res),
 );
 
+router.delete('/users/:userId', (req, res) =>
+  userController.delete(req, res),
+);
+
 export default router;
