@@ -1,0 +1,44 @@
+openapi: 3.0.3
+
+info:
+  title: FACOFFEE Users Service
+  version: 1.0.0
+  description: API do microsserviço de gerenciamento de usuários.
+
+servers:
+  - url: http://localhost:3001
+
+paths:
+  /health:
+    get:
+      summary: Verificar disponibilidade do serviço
+      tags:
+        - Health
+
+      responses:
+        '200':
+          description: Serviço disponível
+
+  /users:
+    post:
+      summary: Criar usuário
+      tags:
+        - Users
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+
+              properties:
+                name:
+                  type: string
+
+                email:
+                  type: string
+
+      responses:
+        '201':
+          description: Usuário criado
