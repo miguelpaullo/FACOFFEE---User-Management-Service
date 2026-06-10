@@ -1,5 +1,6 @@
 import { CreateUserDto } from '../dtos/CreateUserDto';
 import { UpdateUserDto } from '../dtos/UpdateUserDto';
+import { UpdateUserRolesDto } from '../dtos/UpdateUserRolesDto';
 
 export class UserService {
   create(data: CreateUserDto) {
@@ -30,7 +31,7 @@ export class UserService {
     update(userId: string, data: UpdateUserDto,)   {
         return {
             id: userId,
-    ...     data,
+            data,
             message: 'User updated successfully',
     };
     }
@@ -39,6 +40,14 @@ export class UserService {
         return {
             id: userId,
             message: 'User deactivated successfully',
+    };
+    }
+
+    updateRoles(userId: string, data: UpdateUserRolesDto,) {
+        return {
+            id: userId,
+            roles: data.roles,
+            message: 'User roles updated successfully',
     };
     }
 

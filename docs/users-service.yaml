@@ -121,3 +121,37 @@ paths:
       responses:
         '200':
           description: Usuário desativado
+  
+  /users/{userId}/roles:
+      put:
+        summary: Atualizar papéis do usuário
+
+        tags:
+          - Users
+
+        parameters:
+          - in: path
+            name: userId
+            required: true
+
+            schema:
+              type: string
+
+        requestBody:
+          required: true
+
+          content:
+            application/json:
+              schema:
+                type: object
+
+                properties:
+                  roles:
+                    type: array
+
+                    items:
+                      type: string
+
+        responses:
+          '200':
+            description: Papéis atualizados
