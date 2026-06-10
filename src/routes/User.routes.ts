@@ -18,4 +18,8 @@ router.get('/users/:userId', (req, res) =>
   userController.findById(req, res),
 );
 
+router.patch('/users/:userId', (req, res) =>
+  userController.update(req, res),
+);
+
 export default router;
