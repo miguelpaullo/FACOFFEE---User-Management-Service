@@ -32,6 +32,14 @@ export class UserService {
             id: userId,
     ...     data,
             message: 'User updated successfully',
-  };
-}
+    };
+    }
+
+    delete(userId: string) {
+        return {
+            id: userId,
+            message: 'User deactivated successfully',
+    };
+    }
+
 }

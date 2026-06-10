@@ -40,4 +40,12 @@ export class UserController {
         return res.status(200).json(result);
     }
 
+    delete(req: Request<{ userId: string }>, res: Response,) {
+        const { userId } = req.params;
+
+        const result = this.userService.delete(userId);
+
+        return res.status(200).json(result);
+    }
+
 }
