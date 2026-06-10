@@ -17,4 +17,12 @@ export class UserService {
       },
     ];
   }
+
+    findById(userId: string) {
+    return {
+        id: userId,
+        name: 'Maria Silva',
+        email: 'maria@email.com',
+    };
+    }
 }

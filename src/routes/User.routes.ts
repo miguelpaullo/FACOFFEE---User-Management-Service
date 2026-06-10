@@ -14,4 +14,8 @@ router.get('/users', (req, res) =>
   userController.findAll(req, res),
 );
 
+router.get('/users/:userId', (req, res) =>
+  userController.findById(req, res),
+);
+
 export default router;
