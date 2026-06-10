@@ -13,4 +13,10 @@ export class UserController {
 
     return res.status(201).json(result);
   }
+
+  findAll(req: Request, res: Response) {
+    const users = this.userService.findAll();
+
+    return res.status(200).json(users);
+  }
 }
