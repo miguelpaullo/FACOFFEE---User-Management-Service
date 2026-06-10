@@ -19,4 +19,13 @@ export class UserController {
 
     return res.status(200).json(users);
   }
+
+  findById(req: Request<{ userId: string }>, res: Response) {
+    const { userId } = req.params;
+
+    const user = this.userService.findById(userId);
+
+    return res.status(200).json(user);
+    }
+
 }

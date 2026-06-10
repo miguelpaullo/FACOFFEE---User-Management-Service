@@ -51,3 +51,22 @@ paths:
       responses:
         '200':
           description: Lista de usuários
+          
+  /users/{userId}:
+    get:
+      summary: Obter usuário por identificador
+
+      tags:
+        - Users
+
+      parameters:
+        - in: path
+          name: userId
+          required: true
+
+          schema:
+            type: string
+
+      responses:
+        '200':
+          description: Usuário encontrado
