@@ -1,5 +1,23 @@
-import { Request, Response, NextFunction } from 'express';
-import { AuthenticatedUser } from '../types/authenticatedUser';
+import type { Request, Response, NextFunction } from 'express';
+import { createRemoteJWKSet, jwtVerify } from 'jose';
+import type { AuthenticatedUser } from '../types/authenticatedUser';
+
+const keycloakIssuer =
+  process.env.KEYCLOAK_ISSUER || 'http://localhost:8080/realms/facoffee';
+
+const jwks = createRemoteJWKSet(
+  new URL(`${keycloakIssuer}/protocol/openid-connect/certs`)
+);
+
+function extractRoles(payload: any): string[] {
+  const rolesFromClaim = Array.isArray(payload.roles) ? payload.roles : [];
+
+  const rolesFromRealmAccess = Array.isArray(payload.realm_access?.roles)
+    ? payload.realm_access.roles
+    : [];
+
+  return Array.from(new Set([...rolesFromClaim, ...rolesFromRealmAccess]));
+}
 
 export async function authMiddleware(
   req: Request,
@@ -24,14 +42,26 @@ export async function authMiddleware(
     });
   }
 
-  // Temporário: depois vamos validar o token JWT de verdade com o Keycloak.
-  const authenticatedUser: AuthenticatedUser = {
-    id: 'temporary-user-id',
-    email: 'temporary@email.com',
-    roles: ['MANAGER'],
-  };
+  try {
+    const { payload } = await jwtVerify(token, jwks, {
+      issuer: keycloakIssuer,
+    });
 
-  (req as any).authenticatedUser = authenticatedUser;
+    const userId =
+    String(payload.sub || payload.sid || payload.preferred_username || payload.email || '');
 
-  return next();
+    const authenticatedUser: AuthenticatedUser = {
+    id: userId,
+    email: String(payload.email || payload.preferred_username || ''),
+    roles: extractRoles(payload),
+    };
+    (req as any).authenticatedUser = authenticatedUser;
+
+    return next();
+  } catch {
+    return res.status(401).json({
+      error: 'invalid_access_token',
+      message: 'Token de acesso inválido ou expirado.',
+    });
+  }
 }
