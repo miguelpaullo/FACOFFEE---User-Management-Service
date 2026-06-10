@@ -26,4 +26,8 @@ router.delete('/users/:userId', (req, res) =>
   userController.delete(req, res),
 );
 
+router.put('/users/:userId/roles', (req, res) =>
+  userController.updateRoles(req, res),
+);
+
 export default router;

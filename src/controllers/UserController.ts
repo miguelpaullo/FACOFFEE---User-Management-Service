@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { UserService } from '../services/UserService';
 import { CreateUserDto } from '../dtos/CreateUserDto';
 import { UpdateUserDto } from '../dtos/UpdateUserDto';
+import { UpdateUserRolesDto } from '../dtos/UpdateUserRolesDto';
 
 export class UserController {
   private readonly userService = new UserService();
@@ -44,6 +45,14 @@ export class UserController {
         const { userId } = req.params;
 
         const result = this.userService.delete(userId);
+
+        return res.status(200).json(result);
+    }
+
+    updateRoles(req: Request<{ userId: string },{},UpdateUserRolesDto>, res: Response,) {
+        const { userId } = req.params;
+
+        const result = this.userService.updateRoles(userId, req.body,);
 
         return res.status(200).json(result);
     }
