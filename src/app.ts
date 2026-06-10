@@ -1,4 +1,5 @@
 import express from 'express';
+import { authMiddleware } from './middlewares/authMiddleware';
 
 import userRoutes from './routes/User.routes';
 
@@ -16,6 +17,13 @@ app.get('/health', (_, res) => {
 });
 
 app.use(userRoutes);
+
+app.get('/debug/protected', authMiddleware, (req, res) => {
+  return res.status(200).json({
+    message: 'Rota protegida acessada com sucesso.',
+    authenticatedUser: (req as any).authenticatedUser,
+  });
+});
 
 app.use(
   '/docs',
