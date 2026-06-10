@@ -1,4 +1,5 @@
 import { CreateUserDto } from '../dtos/CreateUserDto';
+import { UpdateUserDto } from '../dtos/UpdateUserDto';
 
 export class UserService {
   create(data: CreateUserDto) {
@@ -25,4 +26,12 @@ export class UserService {
         email: 'maria@email.com',
     };
     }
+
+    update(userId: string, data: UpdateUserDto,)   {
+        return {
+            id: userId,
+    ...     data,
+            message: 'User updated successfully',
+  };
+}
 }
