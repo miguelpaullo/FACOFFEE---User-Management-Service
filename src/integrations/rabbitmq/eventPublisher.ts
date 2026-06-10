@@ -16,13 +16,16 @@ async function getChannel(): Promise<amqp.Channel> {
   }
 
   connection = await amqp.connect(rabbitmqUrl);
-  channel = await connection.createChannel();
 
-  await channel.assertExchange(exchangeName, 'topic', {
+  const createdChannel = await connection.createChannel();
+
+  await createdChannel.assertExchange(exchangeName, 'topic', {
     durable: true,
   });
 
-  return channel;
+  channel = createdChannel;
+
+  return createdChannel;
 }
 
 export async function publishDomainEvent(
