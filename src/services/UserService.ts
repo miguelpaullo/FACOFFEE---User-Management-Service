@@ -1,54 +1,78 @@
+import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';
+import { PrismaClient } from '../generated/prisma/client';
 import { CreateUserDto } from '../dtos/CreateUserDto';
 import { UpdateUserDto } from '../dtos/UpdateUserDto';
 import { UpdateUserRolesDto } from '../dtos/UpdateUserRolesDto';
 
+const adapter = new PrismaBetterSqlite3({
+  url: process.env.DATABASE_URL ?? 'file:./dev.db',
+});
+
+const prisma = new PrismaClient({
+  adapter,
+});
+
 export class UserService {
-  create(data: CreateUserDto) {
-    return {
-      message: 'User endpoint configured',
-      receivedData: data,
-    };
-  }
+  async create(data: CreateUserDto) {
+    const role = (data.roles?.[0] ?? 'PARTICIPANT') as 'MANAGER' | 'PARTICIPANT';
 
-  findAll() {
-    return [
-      {
-        id: 'usr_001',
-        name: 'Maria Silva',
-        email: 'maria@email.com',
+    const user = await prisma.user.create({
+      data: {
+        name: data.name,
+        email: data.email,
+        roles: role,
       },
-    ];
+    });
+
+    return user;
   }
 
-    findById(userId: string) {
-    return {
+  async findAll() {
+    return prisma.user.findMany();
+  }
+
+  async findById(userId: string) {
+    return prisma.user.findUnique({
+      where: {
         id: userId,
-        name: 'Maria Silva',
-        email: 'maria@email.com',
-    };
-    }
+      },
+    });
+  }
 
-    update(userId: string, data: UpdateUserDto,)   {
-        return {
-            id: userId,
-            data,
-            message: 'User updated successfully',
-    };
-    }
+  async update(userId: string, data: UpdateUserDto) {
+    return prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        name: data.name,
+        email: data.email,
+      },
+    });
+  }
 
-    delete(userId: string) {
-        return {
-            id: userId,
-            message: 'User deactivated successfully',
-    };
-    }
+  async delete(userId: string) {
+    return prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        status: 'INACTIVE',
+        deactivatedAt: new Date(),
+      },
+    });
+  }
 
-    updateRoles(userId: string, data: UpdateUserRolesDto,) {
-        return {
-            id: userId,
-            roles: data.roles,
-            message: 'User roles updated successfully',
-    };
-    }
+  async updateRoles(userId: string, data: UpdateUserRolesDto) {
+    const role = (data.roles?.[0] ?? 'PARTICIPANT') as 'MANAGER' | 'PARTICIPANT';
 
+    return prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        roles: role,
+      },
+    });
+  }
 }
