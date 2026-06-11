@@ -41,13 +41,18 @@ export class UserController {
         return res.status(200).json(result);
     }
 
-    delete(req: Request<{ userId: string }>, res: Response,) {
-        const { userId } = req.params;
+    async delete(
+            req: Request<{ userId: string }>,
+            res: Response,
+            ) {
+            const { userId } = req.params;
 
-        const result = this.userService.delete(userId);
+            const result = await this.userService.delete(
+                userId,
+            );
 
-        return res.status(200).json(result);
-    }
+  return res.status(200).json(result);
+}
 
     updateRoles(req: Request<{ userId: string },{},UpdateUserRolesDto>, res: Response,) {
         const { userId } = req.params;
