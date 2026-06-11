@@ -9,5 +9,27 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
+}
+
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum Role {
+  MANAGER
+  PARTICIPANT
+}
+
+model User {
+  id            String     @id @default(uuid()) // O ID pode vir do sub do Keycloak se preferirem
+  name          String
+  email         String     @unique
+  status        UserStatus @default(ACTIVE)
+  roles         Role     // Suportado nativamente no Postgres (Scalar Lists)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  deactivatedAt DateTime?
 }
