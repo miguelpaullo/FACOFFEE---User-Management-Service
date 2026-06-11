@@ -1,190 +1,192 @@
-# Setup do Ambiente
+# FACOFFEE - Setup Atual do Projeto
 
-## Pré-requisitos
+## Infraestrutura
 
-Instalar:
+A infraestrutura local está funcionando através do Docker Compose.
 
-### Git
+### Serviços disponíveis
 
-Verificar:
+| Serviço             | Porta |
+| ------------------- | ----- |
+| Keycloak            | 8080  |
+| RabbitMQ Management | 15672 |
+| RabbitMQ AMQP       | 5672  |
+| Mailpit             | 8025  |
+| SMTP Mailpit        | 1025  |
+| API Gateway         | 18000 |
+| Users Service       | 3001  |
+
+---
+
+## Inicialização
+
+### Subir infraestrutura
 
 ```bash
-git --version
+docker compose up -d
 ```
 
-### Node.js
+### Verificar containers
 
-Versão recomendada:
+```bash
+docker compose ps
+```
+
+---
+
+## Keycloak
+
+### URL
 
 ```text
-Node.js 22 LTS
+http://localhost:8080
 ```
 
-Verificar:
+### Realm
 
-```bash
-node -v
-npm -v
+```text
+facoffee
 ```
 
-### VS Code
+### Usuário de teste
 
-Extensões recomendadas:
+```text
+Email: facoffee@facom.ufms.br
+Senha: facoffee
+```
 
-* ESLint
-* Prettier
-* Prisma
-* Thunder Client
+### Clients
 
----
-
-## Clonar o Projeto
-
-```bash
-git clone <https://github.com/miguelpaullo/FACOFFEE---User-Management-Service>
-
-cd FACOFFEE---User-Management-Service
+```text
+facoffee-public
+facoffee-private
 ```
 
 ---
 
-## Instalar Dependências
+## RabbitMQ
+
+### URL
+
+```text
+http://localhost:15672
+```
+
+### Credenciais
+
+```text
+Usuário: facoffee
+Senha: facoffee
+```
+
+### Exchange
+
+```text
+domain.events
+```
+
+### Filas existentes
+
+```text
+participation.user-deactivated
+notification.finance-pendency-created
+reporting.finance-pendency-created
+```
+
+---
+
+## API Gateway
+
+### URL
+
+```text
+http://localhost:18000
+```
+
+### Rotas mapeadas
+
+```text
+/api/users
+/api/participation
+/api/finance
+```
+
+### Observação
+
+O Gateway está operacional.
+
+A validação do token Keycloak ainda apresenta comportamento inconsistente e permanece em investigação.
+
+---
+
+## Mailpit
+
+### URL
+
+```text
+http://localhost:8025
+```
+
+Utilizado para captura de e-mails em ambiente local.
+
+---
+
+## Users Service
+
+### Inicialização
 
 ```bash
 npm install
-```
-
----
-
-## Arquivo de Ambiente
-
-Criar:
-
-```text
-.env
-```
-
-Baseado em:
-
-```text
-.env.example
-```
-
-Exemplo:
-
-```env
-PORT=3001
-```
-
----
-
-## Executar Aplicação
-
-Modo desenvolvimento:
-
-```bash
 npm run dev
 ```
 
-Saída esperada:
+### URL
 
 ```text
-Users Service running on port 3001
+http://localhost:3001
 ```
+
+### Endpoints implementados
+
+```http
+POST   /users
+GET    /users
+GET    /users/:userId
+PATCH  /users/:userId
+DELETE /users/:userId
+PUT    /users/:userId/roles
+```
+
+Atualmente os retornos ainda são mockados.
 
 ---
 
-## Testar API
+## Evento UserDeactivated
 
-Healthcheck:
-
-```text
-http://localhost:3001/health
-```
-
-Swagger:
+### Fluxo
 
 ```text
-http://localhost:3001/docs
+DELETE /users/:userId
+        ↓
+UserService.delete()
+        ↓
+UserDeactivatedPublisher.publish()
+        ↓
+RabbitMQ
 ```
 
----
-
-## Estrutura do Projeto
+### Exchange
 
 ```text
-src/
-├── controllers/
-├── dtos/
-├── routes/
-├── services/
-├── config/
-└── server.ts
+domain.events
 ```
 
----
-
-## Fluxo de Desenvolvimento
-
-### Atualizar Main
-
-```bash
-git checkout main
-git pull origin main
-```
-
-### Criar Branch
-
-```bash
-git checkout -b feat/nome-da-feature
-```
-
-### Commit
-
-```bash
-git add .
-
-git commit -m "feat: descrição"
-```
-
-### Push
-
-```bash
-git push -u origin nome-da-branch
-```
-
-### Pull Request
-
-Abrir PR para main e referenciar a Issue:
+### Routing Key
 
 ```text
-Closes #numero-da-issue
+users.deactivated
 ```
 
----
+### Status
 
-## Convenção de Branches
-
-### Features
-
-```text
-feat/*
-```
-
-### Correções
-
-```text
-fix/*
-```
-
-### Documentação
-
-```text
-docs/*
-```
-
-### Infraestrutura
-
-```text
-chore/*
-```
+Evento implementado e testado com sucesso.
