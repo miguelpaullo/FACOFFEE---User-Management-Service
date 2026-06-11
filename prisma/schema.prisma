@@ -4,16 +4,12 @@
 // Get a free hosted Postgres database in seconds: `npx create-db`
 
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
   output   = "../src/generated/prisma"
 }
 
 datasource db {
   provider = "sqlite"
-}
-
-generator client {
-  provider = "prisma-client-js"
 }
 
 enum UserStatus {
@@ -27,12 +23,26 @@ enum Role {
 }
 
 model User {
-  id            String     @id @default(uuid()) // O ID pode vir do sub do Keycloak se preferirem
+  id            String     @id @default(uuid())
   name          String
   email         String     @unique
   status        UserStatus @default(ACTIVE)
-  roles         Role     // Suportado nativamente no Postgres (Scalar Lists)
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
   deactivatedAt DateTime?
+
+  roles         UserRole[]
+
+  @@map("users")
+}
+
+model UserRole {
+  id     String @id @default(uuid())
+  userId String
+  role   String
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, role])
+  @@map("user_roles")
 }
