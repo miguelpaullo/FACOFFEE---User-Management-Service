@@ -14,7 +14,11 @@ server {
 
   location = /_auth {
     internal;
-    proxy_pass http://keycloak:8080/realms/facoffee/protocol/openid-connect/userinfo;
+    resolver 127.0.0.11 valid=30s;
+
+    set $keycloak_upstream keycloak:8080;
+
+    proxy_pass http://$keycloak_upstream/realms/facoffee/protocol/openid-connect/userinfo;
     proxy_pass_request_body off;
     proxy_set_header Content-Length "";
     proxy_set_header Authorization $http_authorization;

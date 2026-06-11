@@ -1,6 +1,7 @@
 import { CreateUserDto } from '../dtos/CreateUserDto';
 import { UpdateUserDto } from '../dtos/UpdateUserDto';
 import { UpdateUserRolesDto } from '../dtos/UpdateUserRolesDto';
+import { UserDeactivatedPublisher } from '../events/UserDeactivatedPublisher';
 
 export class UserService {
   create(data: CreateUserDto) {
@@ -36,11 +37,18 @@ export class UserService {
     };
     }
 
-    delete(userId: string) {
+    async delete(userId: string) {
+        const publisher = new UserDeactivatedPublisher();
+
+        await publisher.publish(
+            userId,
+            'Usuário desativado manualmente'
+            );
+
         return {
             id: userId,
-            message: 'User deactivated successfully',
-    };
+            status: 'INACTIVE',
+        };
     }
 
     updateRoles(userId: string, data: UpdateUserRolesDto,) {
