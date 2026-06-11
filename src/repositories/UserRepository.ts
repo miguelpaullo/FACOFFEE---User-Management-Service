@@ -55,19 +55,22 @@ export class UserRepository {
   }
 
   async update(
-    userId: string,
-    data: {
-      name?: string;
-      email?: string;
+  userId: string,
+  data: {
+    name?: string;
+    email?: string;
+  },
+) {
+  return prisma.user.update({
+    where: {
+      id: userId,
     },
-  ) {
-    return prisma.user.update({
-      where: {
-        id: userId,
-      },
-      data,
-    });
-  }
+    data: {
+      name: data.name,
+      email: data.email,
+    },
+  });
+}
 
   async softDelete(userId: string) {
     return prisma.user.update({
@@ -81,27 +84,31 @@ export class UserRepository {
     });
   }
 
-  async updateRoles(userId: string, roles: Role[]) {
-    await prisma.userRole.deleteMany({
-      where: {
-        userId,
-      },
-    });
+  async updateRoles(
+    userId: string,
+    roles: Role[],
+    ) {
 
-    await prisma.userRole.createMany({
-      data: roles.map(role => ({
-        userId,
-        role,
-      })),
-    });
+  await prisma.userRole.deleteMany({
+    where: {
+      userId,
+    },
+  });
 
-    return prisma.user.findUnique({
-      where: {
-        id: userId,
-      },
-      include: {
-        roles: true,
-      },
-    });
-  }
+  await prisma.userRole.createMany({
+    data: roles.map(role => ({
+      userId,
+      role,
+    })),
+  });
+
+  return prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+    include: {
+      roles: true,
+    },
+  });
+}
 }
