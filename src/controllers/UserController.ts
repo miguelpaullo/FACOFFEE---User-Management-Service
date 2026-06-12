@@ -7,39 +7,35 @@ import { UpdateUserRolesDto } from '../dtos/UpdateUserRolesDto';
 export class UserController {
   private readonly userService = new UserService();
 
-  create(
-    req: Request<{}, {}, CreateUserDto>,
-    res: Response,
-  ) {
-    const result = this.userService.create(req.body);
+  async create(req: Request, res: Response) {
+  const result = await this.userService.create(req.body);
 
-    return res.status(201).json(result);
-  }
+  return res.status(201).json(result);
+}
 
-  findAll(req: Request, res: Response) {
-    const users = this.userService.findAll();
+  async findAll(req: Request, res: Response) {
+    const users = await this.userService.findAll();
 
     return res.status(200).json(users);
-  }
+}
 
-  findById(req: Request<{ userId: string }>, res: Response) {
-    const { userId } = req.params;
+  async findById(req: Request<{ userId: string }>, res: Response,) {
+  const user = await this.userService.findById(
+    req.params.userId,
+  );
 
-    const user = this.userService.findById(userId);
+  return res.status(200).json(user);
+}
 
-    return res.status(200).json(user);
-    }
+    async update(req: Request<{ userId: string }, {}, UpdateUserDto>, res: Response,) {
+  const result =
+    await this.userService.update(
+      req.params.userId,
+      req.body,
+    );
 
-    update(req: Request<{ userId: string }, {}, UpdateUserDto>, res: Response,) {
-        const { userId } = req.params;
-
-        const result = this.userService.update(
-            userId,
-            req.body,
-        );
-
-        return res.status(200).json(result);
-    }
+  return res.status(200).json(result);
+}
 
     async delete(
             req: Request<{ userId: string }>,
@@ -54,12 +50,15 @@ export class UserController {
   return res.status(200).json(result);
 }
 
-    updateRoles(req: Request<{ userId: string },{},UpdateUserRolesDto>, res: Response,) {
-        const { userId } = req.params;
+    async updateRoles( req: Request<{ userId: string },{},UpdateUserRolesDto>,res: Response,) {
 
-        const result = this.userService.updateRoles(userId, req.body,);
+    const result =
+        await this.userService.updateRoles(
+        req.params.userId,
+        req.body,
+        );
 
-        return res.status(200).json(result);
+    return res.status(200).json(result);
     }
 
 }

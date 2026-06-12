@@ -1,3 +1,5 @@
+import { Role } from '../generated/prisma';
+
 export interface UpdateUserRolesDto {
-  roles: string[];
+  roles: Role[];
 }

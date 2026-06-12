@@ -370,6 +370,99 @@ Dessa forma, busca-se reduzir a curva de aprendizado individual e aumentar a cap
 
 ---
 
+# Status Atual do Projeto
+
+## Funcionalidades Implementadas
+
+### API
+
+- [x] POST /users
+- [x] GET /users
+- [x] GET /users/{userId}
+- [x] PATCH /users/{userId}
+- [x] DELETE /users/{userId}
+- [x] PUT /users/{userId}/roles
+
+### Persistência
+
+- [x] Configuração do Prisma ORM
+- [x] Banco SQLite
+- [x] Migration inicial
+- [x] Model User
+- [x] Model UserRole
+- [x] UserRepository
+
+### Regras de Negócio
+
+- [x] Papel padrão PARTICIPANT
+- [x] Status inicial ACTIVE
+- [x] Atualização de usuário
+- [x] Atualização de papéis
+- [x] Soft Delete
+- [x] Busca por e-mail
+
+### Eventos
+
+- [x] Publicação do evento UserDeactivated
+- [x] Integração com RabbitMQ
+- [x] Exchange domain.events
+
+### Infraestrutura
+
+- [x] Docker Compose
+- [x] API Gateway
+- [x] Keycloak
+- [x] RabbitMQ
+- [x] Mailpit
+
+# Pendências
+
+## Regras de Negócio
+
+- [ ] RN01 - Garantir unicidade de e-mail
+- [ ] RN04 - Apenas MANAGER lista usuários
+- [ ] RN05 - Participante consulta apenas seus dados
+- [ ] RN06 - Participante altera apenas seus dados
+- [ ] RN09 - Consistência completa com Keycloak
+
+## Segurança
+
+- [ ] Validação completa de JWT
+- [ ] Controle de autorização por roles
+
+## Testes
+
+- [ ] Testes unitários
+- [ ] Testes de integração
+- [ ] Testes de autorização
+
+## Tratamento de Erros
+
+- [ ] USER_NOT_FOUND
+- [ ] USER_ALREADY_INACTIVE
+- [ ] EMAIL_ALREADY_EXISTS
+
+## Fase 1 - Estudo
+✅ Concluída
+
+## Fase 2 - Estrutura Inicial
+✅ Concluída
+
+## Fase 3 - Implementação dos Endpoints
+✅ Concluída
+
+## Fase 4 - Persistência
+🚧 Em andamento
+
+## Fase 5 - Autenticação
+🚧 Em andamento
+
+## Fase 6 - Eventos
+✅ Concluída
+
+## Fase 7 - Testes
+❌ Pendente
+
 # Observações
 
 O foco inicial da equipe será garantir a implementação completa dos requisitos obrigatórios definidos no contrato OpenAPI, priorizando funcionalidade, organização do código e aderência às regras de negócio antes da implementação de melhorias adicionais.

@@ -4,6 +4,12 @@
 
 A infraestrutura local está funcionando através do Docker Compose.
 
+## Pré-requisitos
+
+* Node.js 22+
+* Git
+* NPM
+
 ### Serviços disponíveis
 
 | Serviço             | Porta |
@@ -19,18 +25,6 @@ A infraestrutura local está funcionando através do Docker Compose.
 ---
 
 ## Inicialização
-
-### Subir infraestrutura
-
-```bash
-docker compose up -d
-```
-
-### Verificar containers
-
-```bash
-docker compose ps
-```
 
 ---
 
@@ -137,6 +131,102 @@ Utilizado para captura de e-mails em ambiente local.
 
 ```bash
 npm install
+```
+
+### Configurar variáveis de ambiente
+
+Criar um arquivo `.env` na raiz do projeto:
+
+```env
+DATABASE_URL="file:./dev.db"
+```
+
+### Instalar e configurar Prisma
+
+Caso ainda não esteja instalado:
+
+```bash
+npm install prisma@6 @prisma/client@6
+```
+
+Validar o schema:
+
+```bash
+npx prisma validate
+```
+
+Gerar o cliente Prisma:
+
+```bash
+npx prisma generate
+```
+
+---
+
+### Criar banco SQLite
+
+Executar a migration:
+
+```bash
+npx prisma migrate dev --name init
+```
+
+Ao final será criado:
+
+```text
+prisma/dev.db
+```
+
+Banco SQLite utilizado pelo serviço.
+
+---
+
+### Abrir Prisma Studio
+
+Para visualizar e editar os dados do banco:
+
+```bash
+npx prisma studio
+```
+
+A interface ficará disponível em:
+
+```text
+http://localhost:5555
+```
+
+Tabelas disponíveis:
+
+* User
+* UserRole
+
+Funcionalidades:
+
+* Visualizar usuários
+* Visualizar papéis dos usuários
+* Editar registros manualmente
+* Verificar Soft Delete
+* Validar persistência dos dados
+
+---
+
+### Subir infraestrutura Docker
+
+No diretório ../../FACOFFEE---User-Management-Service/facoffee-docs-guia
+
+```bash
+docker compose up -d
+```
+
+Verificar containers:
+
+```bash
+docker ps
+```
+
+### Rodar a aplicação
+
+```bash
 npm run dev
 ```
 
@@ -156,10 +246,6 @@ PATCH  /users/:userId
 DELETE /users/:userId
 PUT    /users/:userId/roles
 ```
-
-Atualmente os retornos ainda são mockados.
-
----
 
 ## Evento UserDeactivated
 
