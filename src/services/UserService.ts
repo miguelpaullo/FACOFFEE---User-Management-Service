@@ -76,9 +76,13 @@ export class UserService {
             throw new Error('INVALID_ROLE');
         }
 
-        await this.getUserOrThrow(userId,);
+        const user =await this.getUserOrThrow(userId);
 
-        return this.userRepository.updateRoles(userId, data.roles as any,);
+        const updatedUser = await this.userRepository.updateRoles(userId, data.roles as any,);
+
+        await this.keycloakService.updateRoles(user.keycloakId, data.roles,);
+
+        return updatedUser;
     }
 
 

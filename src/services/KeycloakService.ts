@@ -25,10 +25,7 @@ export class KeycloakService {
     return data.access_token;
   }
 
-  async createUser(
-    name: string,
-    email: string,
-  ): Promise<string> {
+  async createUser(name: string, email: string,): Promise<string> {
 
     const token = await this.getAdminToken();
 
@@ -64,4 +61,57 @@ export class KeycloakService {
 
     return location!.split('/').pop()!;
   }
+
+  private async getRole(roleName: string) {
+
+    const token = await this.getAdminToken();
+
+    const response = await fetch(
+      `${this.baseUrl}/admin/realms/${this.realm}/roles/${roleName}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error(`Role ${roleName} não encontrada`);
+    }
+
+    return response.json();
+  }
+
+
+  async updateRoles(keycloakId: string, roles: string[],): Promise<void> {
+
+    const token = await this.getAdminToken();
+
+    const keycloakRoles = await Promise.all(
+      roles.map(role => this.getRole(role)),
+    );
+
+    const response = await fetch(
+      `${this.baseUrl}/admin/realms/${this.realm}/users/${keycloakId}/role-mappings/realm`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(keycloakRoles),
+      },
+    );
+
+    if (!response.ok) {
+
+      const body = await response.text();
+
+      console.log('STATUS:', response.status);
+      console.log('BODY:', body);
+
+      throw new Error('Erro ao atualizar roles no Keycloak');
+    }
+  }
+
 }
