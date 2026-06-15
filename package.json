@@ -12,7 +12,8 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "test": "vitest run",
-    "consumer": "ts-node src/consumer.ts"
+    "consumer": "ts-node src/consumer.ts",
+    "test:keycloak": "ts-node src/test-keycloak.ts"
   },
   "repository": {
     "type": "git",

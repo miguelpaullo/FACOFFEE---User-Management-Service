@@ -4,10 +4,12 @@ import { UpdateUserRolesDto } from '../dtos/UpdateUserRolesDto';
 import { UserDeactivatedPublisher } from '../events/UserDeactivatedPublisher';
 import { UserRepository } from '../repositories/UserRepository';
 import { Role } from '../generated/prisma';
+import { KeycloakService } from './KeycloakService';
 
 export class UserService {
 
     private readonly userRepository = new UserRepository();
+    private readonly keycloakService = new KeycloakService();
 
   async create(data: CreateUserDto) {
     console.log(data);
@@ -18,7 +20,13 @@ export class UserService {
       throw new Error('Email já está em uso');
     }
 
+    const keycloakId = await this.keycloakService.createUser(
+      data.name,
+      data.email,
+    );
+
     return this.userRepository.create({
+        keycloakId,
         name: data.name,
         email: data.email,
         roles: data.roles ?? ['PARTICIPANT'],

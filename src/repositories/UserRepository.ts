@@ -4,9 +4,10 @@ const prisma = new PrismaClient();
 
 export class UserRepository {
 
-  async create(data: {name: string; email: string; roles: Role[];}) {
+  async create(data: {name: string; email: string; keycloakId: string; roles: Role[];}) {
     return prisma.user.create({
       data: {
+        keycloakId: data.keycloakId,
         name: data.name,
         email: data.email,
         roles: {
@@ -51,11 +52,10 @@ export class UserRepository {
     });
   }
 
-  async update(
-  userId: string,
-  data: {
+  async update(userId: string, data: {
     name?: string;
     email?: string;
+    keycloakId?: string;
   },
 ) {
   return prisma.user.update({
@@ -65,6 +65,7 @@ export class UserRepository {
     data: {
       name: data.name,
       email: data.email,
+      keycloakId: data.keycloakId,
     },
   });
 }
