@@ -11,7 +11,8 @@
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
-    "test": "vitest run"
+    "test": "vitest run",
+    "consumer": "ts-node src/consumer.ts"
   },
   "repository": {
     "type": "git",
