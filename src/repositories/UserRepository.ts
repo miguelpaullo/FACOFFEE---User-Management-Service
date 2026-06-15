@@ -3,11 +3,8 @@ import { PrismaClient, Role } from '../generated/prisma';
 const prisma = new PrismaClient();
 
 export class UserRepository {
-  async create(data: {
-    name: string;
-    email: string;
-    roles: Role[];
-  }) {
+
+  async create(data: {name: string; email: string; roles: Role[];}) {
     return prisma.user.create({
       data: {
         name: data.name,
