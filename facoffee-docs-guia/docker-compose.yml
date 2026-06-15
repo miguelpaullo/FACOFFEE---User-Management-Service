@@ -43,6 +43,7 @@ services:
     environment:
       KEYCLOAK_ADMIN: facoffee
       KEYCLOAK_ADMIN_PASSWORD: facoffee
+      KC_HOSTNAME: localhost
       KC_HOSTNAME_STRICT: "false"
     ports:
       - "8080:8080"
