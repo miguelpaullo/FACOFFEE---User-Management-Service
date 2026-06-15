@@ -1,6 +1,7 @@
 -- CreateTable
 CREATE TABLE "users" (
     "id" TEXT NOT NULL PRIMARY KEY,
+    "keycloakId" TEXT,
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "status" TEXT NOT NULL DEFAULT 'ACTIVE',

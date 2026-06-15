@@ -156,6 +156,16 @@ npm run dev
 
 ---
 
+## Observação sobre autenticação
+
+O gateway Nginx deve encaminhar as requisições internas para o Keycloak com `Host: localhost:8080`.
+
+Isso garante que o issuer no token (`http://localhost:8080/realms/facoffee`) corresponda ao hostname do request interno.
+
+O endpoint `/userinfo` também requer que o token contenha o escopo `openid`.
+
+---
+
 # Modelo de Dados
 
 ## User

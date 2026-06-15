@@ -109,7 +109,9 @@ http://localhost:18000
 
 O Gateway está operacional.
 
-A validação do token Keycloak ainda apresenta comportamento inconsistente e permanece em investigação.
+O Keycloak deve ser acessado internamente pelo gateway com o cabeçalho `Host: localhost:8080`, para que o issuer do token (`http://localhost:8080/realms/facoffee`) coincida com o host do request interno.
+
+Além disso, o endpoint `/userinfo` exige um token com o escopo `openid`.
 
 ---
 
