@@ -1,13 +1,14 @@
 import { Router } from 'express';
 
 import { UserController } from '../controllers/UserController';
+import { authMiddleware } from '../middlewares/authMiddleware';
+import { requireManager } from '../middlewares/roleMiddleware';
 
 const router = Router();
 
 const userController = new UserController();
 
-router.post('/users', (req, res) =>
-  userController.create(req, res),
+router.get('/users', authMiddleware, requireManager, (req, res) => userController.findAll(req, res),
 );
 
 router.get('/users', (req, res) =>
