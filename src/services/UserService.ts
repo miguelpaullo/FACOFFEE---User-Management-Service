@@ -17,7 +17,7 @@ export class UserService {
     const existingUser = await this.userRepository.findByEmail(data.email);
 
     if (existingUser) {
-      throw new Error('Email já está em uso');
+      throw new Error('EMAIL_ALREADY_EXISTS');
     }
 
     const keycloakId = await this.keycloakService.createUser(
